@@ -34,6 +34,8 @@ $ yarn dev
 
 ## Project Structure
 
-#components => in this folder parts which is will be used more than once
-
-#pages => this folder contains all pages
+```code
+  #components => in this folder parts which is will be used more than once
+  #pages => this folder contains all pages
+  router.js => contains all routes
+```
