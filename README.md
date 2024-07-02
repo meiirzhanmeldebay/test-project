@@ -35,7 +35,8 @@ $ yarn dev
 ## Project Structure
 
 ```code
-  #components => in this folder parts which is will be used more than once
-  #pages => this folder contains all pages
+  components => in this folder parts which is will be used more than once
+  pages => this folder contains all pages
+  store => state management system using Pinia
   router.js => contains all routes
 ```

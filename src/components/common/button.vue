@@ -56,6 +56,7 @@ export default defineComponent({
   min-width: 100%;
   font-size: 16px;
   line-height: 19px;
+  cursor: pointer;
 
   // state
   &:hover,

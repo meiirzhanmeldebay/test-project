@@ -20,16 +20,21 @@
           :rounded="true"
         />
       </form>
-      <div class="content">
-        <CommonFeedItem
-          v-for="(item, key) in profilePosts"
-          :key="key"
-          :id="item.id"
-          :title="item.title"
-          :time="item.time ? item.time : '8m ago'"
-          :description="item.body"
-          :imgUrl="item.imgUrl ? item.imgUrl : '/images/feed/big_banner.png'"
-        />
+      <div :class="{ content: true, 'content-loading': !profilePosts.length }">
+        <template v-if="profilePosts.length">
+          <CommonFeedItem
+            v-for="(item, key) in profilePosts"
+            :key="key"
+            :id="item.id"
+            :title="item.title"
+            :time="item.time ? item.time : '8m ago'"
+            :description="item.body"
+            :imgUrl="item.imgUrl ? item.imgUrl : '/images/feed/big_banner.png'"
+          />
+        </template>
+        <template v-else>
+          <loader />
+        </template>
       </div>
     </div>
   </div>
@@ -40,6 +45,7 @@ import { defineComponent, reactive, toRefs, onMounted, computed } from "vue";
 import CommonLayoutHeader from "../components/common/layout/bheader.vue";
 import CommonFormInput from "../components/form/input.vue";
 import CommonFeedItem from "../components/pages/feed/item.vue";
+import loader from "../components/common/layout/loader.vue";
 // importing global types
 import type { TField, FeedItem, IForm } from "../types/global";
 
@@ -51,6 +57,7 @@ export default defineComponent({
     CommonLayoutHeader,
     CommonFormInput,
     CommonFeedItem,
+    loader,
   },
   setup() {
     const state = reactive<{
@@ -158,6 +165,7 @@ export default defineComponent({
       return useProfileStore().profilePosts;
     });
 
+    // get posts
     const getProfilePosts = async () => {
       try {
         const data = await useProfileStore().getProfilePosts();
@@ -167,6 +175,7 @@ export default defineComponent({
     };
 
     onMounted(async () => {
+      // checks if profilePosts exist and fetches it when doesn't
       if (!profilePosts.value.length) {
         await getProfilePosts();
       }
@@ -191,6 +200,15 @@ export default defineComponent({
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: space-between;
+      }
+      &-loading {
+        min-height: 200px;
+        display: flex;
+        align-items: center;
+        .loader {
+          width: 32px;
+          height: 32px;
+        }
       }
     }
   }

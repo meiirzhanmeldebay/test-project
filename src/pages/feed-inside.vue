@@ -1,22 +1,27 @@
 <template>
   <div class="feed-inside">
     <div class="feed-inside__container">
-      <div class="feed-inside__banner">
-        <img :src="'https://picsum.photos/600/400'" alt="" />
-      </div>
-      <div class="feed-inside__content">
-        <div class="title">
-          <h2>
-            {{ feedData?.title }}
-          </h2>
-          <span class="author"> Author </span>
+      <template v-if="feedData && feedData.title">
+        <div class="feed-inside__banner">
+          <img :src="'https://picsum.photos/600/400'" alt="" />
         </div>
-        <div class="description">
-          <p>
-            {{ feedData?.body ? feedData?.body : text }}
-          </p>
+        <div class="feed-inside__content">
+          <div class="title">
+            <h2>
+              {{ feedData?.title }}
+            </h2>
+            <span class="author"> Author </span>
+          </div>
+          <div class="description">
+            <p>
+              {{ feedData?.body ? feedData?.body : text }}
+            </p>
+          </div>
         </div>
-      </div>
+      </template>
+      <template v-else>
+        <loader />
+      </template>
     </div>
   </div>
 </template>
@@ -25,8 +30,11 @@ import { defineComponent, reactive, toRefs, onMounted, computed } from "vue";
 import { useProfileStore } from "../store/profile";
 import { useRoute } from "vue-router";
 import type { PhotoItem, PostItem } from "../types/profile";
+import loader from "../components/common/layout/loader.vue";
 export default defineComponent({
-  name: "Button",
+  components: {
+    loader,
+  },
   props: {
     id: {
       type: Number,
@@ -64,6 +72,7 @@ export default defineComponent({
       text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti fuga tempore ratione modi neque optio debitis, facere aperiam fugiat a, culpa sapiente temporibus, omnis nemo numquam cupiditate corporis? Dolore, doloribus.",
     });
 
+    // get photos by id
     const getProfilePhotoByID = async (id: number) => {
       try {
         const data = await useProfileStore().getProfilePhotoByID(id);
@@ -73,6 +82,7 @@ export default defineComponent({
       }
     };
 
+    // get posts by id
     const getProfilePostByID = async (id: number) => {
       try {
         const data = await useProfileStore().getProfilePostByID(id);
@@ -83,9 +93,9 @@ export default defineComponent({
     };
 
     onMounted(async () => {
-      console.log("mounted", route.query.slug);
       let slug = route.query.slug;
       let id = route.params?.id ? Number(route.params?.id) : 1;
+      // checks page slug depending slug fetches photo/post by id
       if (slug == "photo") {
         await getProfilePhotoByID(id);
       } else {
@@ -109,6 +119,11 @@ export default defineComponent({
   &__container {
     display: flex;
     flex-direction: column;
+    min-height: 200px;
+    .loader {
+      width: 32px;
+      height: 32px;
+    }
   }
   &__banner {
     margin-bottom: 32px;

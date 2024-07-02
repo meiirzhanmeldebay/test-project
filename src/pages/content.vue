@@ -20,16 +20,21 @@
           :rounded="true"
         />
       </form>
-      <div class="wrapper">
-        <CommonContentItem
-          v-for="(item, key) in profilePhotos"
-          :key="key"
-          :id="item.id"
-          :title="item.title"
-          :time="item.time ? item.time : '8m ago'"
-          :description="item.title"
-          imgUrl="https://picsum.photos/600/400"
-        />
+      <div :class="{ wrapper: true, 'wrapper-loading': !profilePhotos.length }">
+        <template v-if="profilePhotos.length">
+          <CommonContentItem
+            v-for="(item, key) in profilePhotos"
+            :key="key"
+            :id="item.id"
+            :title="item.title"
+            :time="item.time ? item.time : '8m ago'"
+            :description="item.title"
+            imgUrl="https://picsum.photos/600/400"
+          />
+        </template>
+        <template v-else>
+          <loader />
+        </template>
       </div>
     </div>
   </div>
@@ -42,7 +47,7 @@ import { useProfileStore } from "../store/profile";
 import CommonLayoutHeader from "../components/common/layout/bheader.vue";
 import CommonFormInput from "../components/form/input.vue";
 import CommonContentItem from "../components/pages/content/item.vue";
-
+import loader from "../components/common/layout/loader.vue";
 // importing global types
 import type { TField, FeedItem, IForm } from "../types/global";
 
@@ -52,6 +57,7 @@ export default defineComponent({
     CommonLayoutHeader,
     CommonFormInput,
     CommonContentItem,
+    loader,
   },
   setup() {
     const state = reactive<{
@@ -154,10 +160,12 @@ export default defineComponent({
         },
       ],
     });
+
     const profilePhotos = computed(() => {
       return useProfileStore().profilePhotos;
     });
 
+    // get photos
     const getProfilePhotos = async () => {
       try {
         const data = await useProfileStore().getProfilePhotos();
@@ -167,6 +175,7 @@ export default defineComponent({
     };
 
     onMounted(async () => {
+      // checks if profilePhotos exist and fetches it when doesn't
       if (!profilePhotos.value.length) {
         await getProfilePhotos();
       }
@@ -191,6 +200,15 @@ export default defineComponent({
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: space-between;
+      }
+      &-loading {
+        min-height: 200px;
+        display: flex;
+        align-items: center;
+        .loader {
+          width: 32px;
+          height: 32px;
+        }
       }
     }
   }

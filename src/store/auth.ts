@@ -120,7 +120,7 @@ export const useAuthStore = defineStore('auth', {
           this.isAuthorized = false;
         }
         setCookie('isAuthorized', this.isAuthorized, { path: '/', maxAge: 3600 })
-        console.log('loginSuccess', loginSuccess)
+        
 
         return loginSuccess;
         
@@ -150,8 +150,7 @@ export const useAuthStore = defineStore('auth', {
         this.isAuthorized = true;
         setCookie('isAuthorized', this.isAuthorized, { path: '/', maxAge: 3600 })
 
-        let users = getCookie('users')
-        console.log('users', users)
+        let users = getCookie('users')        
 
         return true;
         

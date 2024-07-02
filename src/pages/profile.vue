@@ -211,6 +211,7 @@ export default defineComponent({
       ],
     });
 
+    // activetes clicked tab
     const updateActiveTab = (slug: string, index: number) => {
       state.activeTab = slug;
       state.activeIndexTab = index;
@@ -232,11 +233,12 @@ export default defineComponent({
     });
 
     const logout = () => {
-      alert("logout");
+      alert("You are logging out!");
       useAuthStore().logout();
       router.push("/sign-in");
     };
 
+    // get profile photos
     const getProfilePhotos = async () => {
       try {
         const data = await useProfileStore().getProfilePhotos();
@@ -245,6 +247,7 @@ export default defineComponent({
       }
     };
 
+    // get profile posts
     const getProfilePosts = async () => {
       try {
         const data = await useProfileStore().getProfilePosts();
@@ -254,7 +257,6 @@ export default defineComponent({
     };
 
     onMounted(async () => {
-      console.log("mounted");
       await getProfilePhotos();
       await getProfilePosts();
     });

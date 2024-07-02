@@ -114,7 +114,7 @@ export default defineComponent({
     });
 
     const logout = () => {
-      alert("logout");
+      alert("You are logging out!");
       useAuthStore().logout();
       router.push("/sign-in");
     };
@@ -158,6 +158,7 @@ export default defineComponent({
       }
     };
 
+    // validate proper email
     const validateEmail = () => {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

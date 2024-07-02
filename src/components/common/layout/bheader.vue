@@ -102,11 +102,11 @@ export default {
     };
   },
   methods: {
+    // if enableCustomEvent use method or just go previous page
     goBack() {
       if (this.enableCustomEvent) {
         this.$emit("backHandler");
       } else {
-        console.log("here");
         this.$router.go(-1);
       }
     },

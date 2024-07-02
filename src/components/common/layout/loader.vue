@@ -20,8 +20,8 @@ export default {
   border-top: 2px solid #fff;
   width: 16px;
   height: 16px;
-  -webkit-animation: spin 2s linear infinite; /* Safari */
-  animation: spin 2s linear infinite;
+  -webkit-animation: spin 1.2s linear infinite; /* Safari */
+  animation: spin 1.2s linear infinite;
   margin: auto;
 }
 
